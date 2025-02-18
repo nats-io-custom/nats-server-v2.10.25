@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
-              {
+        {
             "name": "nats server - centralized custom",
             "type": "go",
             "request": "launch",
@@ -23,6 +23,18 @@
                 "-c","./examples/centralized/server.conf",
 
             ]    
+        },
+        {
+            "name": "callout_centralized/service",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/examples/centralized/app",
+            "console": "externalTerminal",
+            "args": [ 
+                    "callout","centralized","service",
+                     
+                    ]    
         }
 
     ]

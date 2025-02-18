@@ -1,7 +1,9 @@
 package centralized
 
 import (
+	"github.com/nats-io/nats-server/v2/examples/centralized/app/root/callout/centralized/client"
 	"github.com/nats-io/nats-server/v2/examples/centralized/app/root/callout/centralized/service"
+
 	"github.com/nats-io/nats-server/v2/examples/internal/cobra_utils"
 	cobra "github.com/spf13/cobra"
 )
@@ -19,5 +21,6 @@ func Init(parentCmd *cobra.Command) {
 	parentCmd.AddCommand(command)
 
 	service.Init(command)
+	client.Init(command)
 
 }
