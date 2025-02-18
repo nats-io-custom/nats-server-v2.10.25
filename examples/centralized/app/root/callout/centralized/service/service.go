@@ -78,8 +78,8 @@ func Init(parentCmd *cobra.Command) {
 			users := make(map[string]*models.User)
 			sysAccount := "sys"
 			users[sysAccount] = &models.User{
-				Pass:    sysAccount,
-				Account: "SYS",
+				Pass:            sysAccount,
+				AllowedAccounts: map[string]bool{"SYS": true},
 				Permissions: jwt.Permissions{
 					Pub: jwt.Permission{
 						Allow: jwt.StringList{">"},
@@ -173,8 +173,8 @@ func Init(parentCmd *cobra.Command) {
 				if !ok {
 					// just create the user for the POC
 					userProfile = &models.User{
-						Pass:    accountUser.UserPassword,
-						Account: accountUser.AccountName,
+						Pass:            accountUser.UserPassword,
+						AllowedAccounts: map[string]bool{accountUser.AccountName: true},
 						Permissions: jwt.Permissions{
 							Pub: jwt.Permission{
 								Allow: jwt.StringList{">"},
@@ -186,6 +186,8 @@ func Init(parentCmd *cobra.Command) {
 					}
 					users[accountUser.UserName] = userProfile
 				}
+				userProfile.AllowedAccounts[accountUser.AccountName] = true
+
 				// Check if the credential is valid.
 				if userProfile.Pass != accountUser.UserPassword {
 					respondMsg(req, userNkey, serverId, "", "invalid credentials")
@@ -195,11 +197,11 @@ func Init(parentCmd *cobra.Command) {
 				// Prepare a user JWT.
 				uc := jwt.NewUserClaims(rc.UserNkey)
 				uc.Name = accountUser.UserName
-				uc.Audience = userProfile.Account
+				uc.Audience = accountUser.AccountName
 				if uc.Name != sysAccount {
 					//dd, _ := nkeys.Encode(nkeys.PrefixByteAccount, []byte(userProfile.Account))
 					landingAccount, err := GetOrCreateAccount(ctx, &GetOrCreateAccountRequest{
-						FriendlyAccountName: userProfile.Account,
+						FriendlyAccountName: accountUser.AccountName,
 						IssuerKeyPair:       issuerKeyPair,
 					})
 					if err != nil {

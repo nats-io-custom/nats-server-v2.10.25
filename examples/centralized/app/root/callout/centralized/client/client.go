@@ -43,11 +43,13 @@ func Init(parentCmd *cobra.Command) {
 			ctx := internal.GetContext()
 			log := zerolog.Ctx(ctx).With().Str("command", use).Logger()
 
-			accountUserToken, err := shared.NewAccountUserToken(&models.AccountUser{
+			accountUser := &models.AccountUser{
 				AccountName:  appInputs.AccountName,
 				UserName:     appInputs.UserName,
 				UserPassword: appInputs.UserPassword,
-			})
+			}
+			log.Info().Interface("accountUser", accountUser).Msg("")
+			accountUserToken, err := shared.NewAccountUserToken(accountUser)
 			if err != nil {
 				log.Error().Err(err).Msg("failed to create account user token")
 				return err

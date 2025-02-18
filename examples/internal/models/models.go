@@ -14,9 +14,9 @@ type (
 		UserPassword string `json:"userPassword"`
 	}
 	User struct {
-		Pass        string
-		Account     string
-		Permissions jwt.Permissions
+		Pass            string
+		AllowedAccounts map[string]bool
+		Permissions     jwt.Permissions
 	}
 	ResolverResponse struct {
 		Error  *ErrorDetails `json:"error,omitempty"`
