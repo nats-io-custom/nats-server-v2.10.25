@@ -2,7 +2,7 @@
 
 ## Dynamic Account
 
-Based on an opaque token from then client with the following format:
+Based on an opaque token from the client with the following format:
 
 ```go
 type AccountUser struct {
@@ -16,7 +16,7 @@ the backend utilizing auth callouts needs the ability to dynamically create an a
 
 The client, which must be assumed to be immutable when it comes to credentials, must be able to reconnect even if the backend nats configuration changes.  This means, that we change the signing keys.
 
-We do have an example where this can be done using the `decentralized model` but there is a show stopper issue where the client is required to pass a sentinel.creds file that is signed by a private key of a current config.  The sentinel.creds file cannot be updated and thus bricks the client.  
+We do have an example where this can be done using the `decentralized model` but there is a show stopper issue where the client is required to pass a **sentinel.creds** file that is signed by a private key of a current config.  If we need to repave the backend config with new signing keys, the sentinel.creds file cannot be updated and thus **bricks** the client.  
 
 The credentials are wholy owned and managed by an external entity.
 
